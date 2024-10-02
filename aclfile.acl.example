@@ -1,0 +1,9 @@
+# This is a sample ACL file.  It is used to define the access control list for the server.
+
+# The first line is the default ACL.  This is the ACL that is used when no other ACL is defined. It has full access to all commands and all channels.
+user default on >Complex-Password-Goes-Here ~* +@all
+
+# This is an example of a user ACL.  This ACL is used for the user "readonly".  It has read-only access to all channels.
+user readonly on >readonlypassword ~* +@read +@all
+
+# ACL FILES CANNOT HAVE COMMENTS.  THE COMMENTED LINES ABOVE ARE FOR EXAMPLE ONLY. IF YOU HAVE COMMENTS IN YOUR ACL FILE, REDIS WILL NOT START.

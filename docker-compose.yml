@@ -1,0 +1,170 @@
+services:
+  redis-master:
+    image: redis:latest
+    container_name: redis-master
+    hostname: redis-master
+    ports:
+      - '${REDIS_PORT_1}:${REDIS_EXPOSED_PORT}'
+    volumes:
+      - redis-master-data:/data
+      - ./aclfile.acl:/usr/local/etc/redis/aclfile.acl
+    command: [
+        'redis-server',
+        '--appendonly',
+        'yes',
+        '--repl-diskless-load',
+        'on-empty-db',
+        '--replica-announce-ip',
+        '${REDIS_HOST}',
+        '--replica-announce-port',
+        '${REDIS_PORT_1}',
+        '--protected-mode',
+        'no',
+        # if not using acl file, comment out the following line
+        # '--requirepass',
+        # 'Complex-Password-Goes-Here',
+        '--aclfile',
+        '/usr/local/etc/redis/aclfile.acl',
+      ]
+    networks:
+      - redis-net
+
+  redis-slave-1:
+    image: redis:latest
+    container_name: redis-slave-1
+    hostname: redis-slave-1
+    depends_on:
+      - redis-master
+    ports:
+      - '${REDIS_PORT_2}:${REDIS_EXPOSED_PORT}'
+    volumes:
+      - redis-slave1-data:/data
+      - ./aclfile.acl:/usr/local/etc/redis/aclfile.acl
+    command: [
+        'redis-server',
+        '--appendonly',
+        'yes',
+        '--replicaof',
+        'redis-master',
+        '${REDIS_EXPOSED_PORT}',
+        '--repl-diskless-load',
+        'on-empty-db',
+        '--replica-announce-ip',
+        '${REDIS_HOST}',
+        '--replica-announce-port',
+        '${REDIS_PORT_2}',
+        '--protected-mode',
+        'no',
+        # if not using acl file, comment out the following line
+        # '--requirepass',
+        # 'Complex-Password-Goes-Here',
+        '--masterauth',
+        '${REDIS_MASTER_PASSWORD}',
+        '--aclfile',
+        '/usr/local/etc/redis/aclfile.acl',
+      ]
+    networks:
+      - redis-net
+
+  redis-slave-2:
+    image: redis:latest
+    container_name: redis-slave-2
+    hostname: redis-slave-2
+    depends_on:
+      - redis-master
+    ports:
+      - '${REDIS_PORT_3}:${REDIS_EXPOSED_PORT}'
+    volumes:
+      - redis-slave2-data:/data
+      - ./aclfile.acl:/usr/local/etc/redis/aclfile.acl
+    command: [
+        'redis-server',
+        '--appendonly',
+        'yes',
+        '--replicaof',
+        'redis-master',
+        '${REDIS_EXPOSED_PORT}',
+        '--repl-diskless-load',
+        'on-empty-db',
+        '--replica-announce-ip',
+        '${REDIS_HOST}',
+        '--replica-announce-port',
+        '${REDIS_PORT_3}',
+        '--protected-mode',
+        'no',
+        # if not using acl file, comment out the following line
+        # '--requirepass',
+        # 'Complex-Password-Goes-Here',
+        '--masterauth',
+        '${REDIS_MASTER_PASSWORD}',
+        '--aclfile',
+        '/usr/local/etc/redis/aclfile.acl',
+      ]
+    networks:
+      - redis-net
+
+  sentinel-1:
+    image: redis:latest
+    container_name: sentinel-1
+    hostname: sentinel-1
+    depends_on:
+      - redis-master
+    ports:
+      - '${SENTINEL_PORT_1}:${SENTINEL_EXPOSED_PORT}'
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
+            echo "sentinel monitor ${REDIS_CLUSTER_NAME} ${REDIS_HOST} ${REDIS_EXPOSED_PORT} 2" >> /etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel parallel-syncs ${REDIS_CLUSTER_NAME} 1" >> /etc/sentinel.conf &&
+            redis-sentinel /etc/sentinel.conf'
+    networks:
+      - redis-net
+
+  sentinel-2:
+    image: redis:latest
+    container_name: sentinel-2
+    hostname: sentinel-2
+    depends_on:
+      - redis-master
+    ports:
+      - '${SENTINEL_PORT_2}:${SENTINEL_EXPOSED_PORT}'
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
+            echo "sentinel monitor ${REDIS_CLUSTER_NAME} ${REDIS_HOST} ${REDIS_EXPOSED_PORT} 2" >> /etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel parallel-syncs ${REDIS_CLUSTER_NAME} 1" >> /etc/sentinel.conf &&
+            redis-sentinel /etc/sentinel.conf'
+    networks:
+      - redis-net
+
+  sentinel-3:
+    image: redis:latest
+    container_name: sentinel-3
+    hostname: sentinel-3
+    depends_on:
+      - redis-master
+    ports:
+      - '${SENTINEL_PORT_3}:${SENTINEL_EXPOSED_PORT}'
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
+            echo "sentinel monitor ${REDIS_CLUSTER_NAME} ${REDIS_HOST} ${REDIS_EXPOSED_PORT} 2" >> /etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel parallel-syncs ${REDIS_CLUSTER_NAME} 1" >> /etc/sentinel.conf &&
+            redis-sentinel /etc/sentinel.conf'
+    networks:
+      - redis-net
+
+networks:
+  redis-net:
+    driver: bridge
+
+volumes:
+  redis-master-data:
+  redis-slave1-data:
+  redis-slave2-data:
