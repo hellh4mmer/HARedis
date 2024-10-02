@@ -24,12 +24,15 @@ async function main() {
 
   try {
     const randomKey = await client.randomKey();
-    const randomValue = await client.get(randomKey);
-    const keysCount = await client.dbSize();
-
-    console.log('Random key:', randomKey);
-    console.log('Random value:', randomValue);
-    console.log('Keys count:', keysCount);
+    if (!randomKey) {
+      console.log('No keys found');
+    } else {
+      const randomValue = await client.get(randomKey);
+      const keysCount = await client.dbSize();
+      console.log('Random key:', randomKey);
+      console.log('Random value:', randomValue);
+      console.log('Keys count:', keysCount);
+    }
   } catch (error) {
     console.log('Error:', error);
   }
