@@ -4,9 +4,10 @@ services:
     container_name: redis-node-1
     environment:
       - REDIS_REPLICATION_MODE=master
-      - REDIS_PASSWORD=Complex-Password-Goes-Here
-      - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
       - REDIS_PORT_NUMBER=6379
+      - ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - redis-node-1-data:/bitnami
     ports:
@@ -20,10 +21,11 @@ services:
     environment:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis-node-1
-      - REDIS_PASSWORD=Complex-Password-Goes-Here
-      - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
       - REDIS_MASTER_PORT_NUMBER=6379
       - REDIS_PORT_NUMBER=6379
+      - ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - redis-node-2-data:/bitnami
     ports:
@@ -37,10 +39,11 @@ services:
     environment:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis-node-1
-      - REDIS_PASSWORD=Complex-Password-Goes-Here
-      - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
       - REDIS_MASTER_PORT_NUMBER=6379
       - REDIS_PORT_NUMBER=6379
+      - ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - redis-node-3-data:/bitnami
     ports:
@@ -52,8 +55,8 @@ services:
     image: bitnami/redis-sentinel:latest
     container_name: sentinel-1
     environment:
-      - REDIS_SENTINEL_PASSWORD=Complex-Password-Goes-Here
-      - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_SENTINEL_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
       - REDIS_MASTER_HOST=redis-node-1
       - REDIS_MASTER_PORT_NUMBER=6379
       - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
@@ -66,8 +69,8 @@ services:
     image: bitnami/redis-sentinel:latest
     container_name: sentinel-2
     environment:
-      - REDIS_SENTINEL_PASSWORD=Complex-Password-Goes-Here
-      - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_SENTINEL_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
       - REDIS_MASTER_HOST=redis-node-1
       - REDIS_MASTER_PORT_NUMBER=6379
       - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
@@ -80,8 +83,8 @@ services:
     image: bitnami/redis-sentinel:latest
     container_name: sentinel-3
     environment:
-      - REDIS_SENTINEL_PASSWORD=Complex-Password-Goes-Here
-      - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_SENTINEL_PASSWORD=Complex-Password-Goes-Here
+      # - REDIS_MASTER_PASSWORD=Complex-Password-Goes-Here
       - REDIS_MASTER_HOST=redis-node-1
       - REDIS_MASTER_PORT_NUMBER=6379
       - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
