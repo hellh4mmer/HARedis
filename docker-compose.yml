@@ -116,7 +116,7 @@ services:
     ports:
       - '${SENTINEL_PORT_1}:26379'
     volumes:
-    - ./conf/sentinel-1.conf:/etc/sentinel.conf
+      - ./conf/sentinel-1.conf:/etc/sentinel.conf
     command: ['redis-sentinel', '/etc/sentinel.conf']
     # command: >
     #   sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
@@ -137,8 +137,8 @@ services:
       - redis-master
     ports:
       - '${SENTINEL_PORT_2}:26379'
-    # volumes:
-    - ./conf/sentinel-2.conf:/etc/sentinel.conf
+    volumes:
+      - ./conf/sentinel-2.conf:/etc/sentinel.conf
     command: ['redis-sentinel', '/etc/sentinel.conf']
     # command: >
     #   sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
@@ -160,7 +160,7 @@ services:
     ports:
       - '${SENTINEL_PORT_3}:26379'
     volumes:
-    - ./conf/sentinel-3.conf:/etc/sentinel.conf
+      - ./conf/sentinel-3.conf:/etc/sentinel.conf
     command: ['redis-sentinel', '/etc/sentinel.conf']
     # command: >
     #   sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
