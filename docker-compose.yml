@@ -116,6 +116,7 @@ services:
     ports:
       - '${SENTINEL_PORT_1}:26379'
     volumes:
+      - ./sentinel-data-1:/data/sentinel
       - ./conf/sentinel-1.conf:/etc/sentinel.conf
     command: ['redis-sentinel', '/etc/sentinel.conf']
     # command: >
@@ -138,6 +139,7 @@ services:
     ports:
       - '${SENTINEL_PORT_2}:26379'
     volumes:
+      - ./sentinel-data-2:/data/sentinel
       - ./conf/sentinel-2.conf:/etc/sentinel.conf
     command: ['redis-sentinel', '/etc/sentinel.conf']
     # command: >
@@ -160,6 +162,7 @@ services:
     ports:
       - '${SENTINEL_PORT_3}:26379'
     volumes:
+      - ./sentinel-data-3:/data/sentinel
       - ./conf/sentinel-3.conf:/etc/sentinel.conf
     command: ['redis-sentinel', '/etc/sentinel.conf']
     # command: >
