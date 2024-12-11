@@ -118,18 +118,18 @@ services:
       - redis-master
     ports:
       - '${SENTINEL_PORT_1}:26379'
-    volumes:
-      - ./sentinel-data-1:/data
-      - ./conf/sentinel-1.conf:/etc/sentinel.conf
-    command: ['redis-sentinel', '/etc/sentinel.conf']
-    # command: >
-    #   sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
-    #         echo "sentinel monitor ${REDIS_CLUSTER_NAME} ${HOST_IP} 6379 2" >> /etc/sentinel.conf &&
-    #         echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
-    #         echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
-    #         echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
-    #         echo "sentinel parallel-syncs ${REDIS_CLUSTER_NAME} 1" >> /etc/sentinel.conf &&
-    #         redis-sentinel /etc/sentinel.conf'
+    # volumes:
+    #   - ./sentinel-data-1:/data
+    #   - ./conf/sentinel-1.conf:/etc/sentinel.conf
+    # command: ['redis-sentinel', '/etc/sentinel.conf']
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
+            echo "sentinel monitor ${REDIS_CLUSTER_NAME} 172.21.0.3 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel parallel-syncs ${REDIS_CLUSTER_NAME} 1" >> /etc/sentinel.conf &&
+            redis-sentinel /etc/sentinel.conf'
     networks:
       redis-net:
         ipv4_address: 172.21.0.6
@@ -142,18 +142,18 @@ services:
       - redis-master
     ports:
       - '${SENTINEL_PORT_2}:26379'
-    volumes:
-      - ./sentinel-data-2:/data
-      - ./conf/sentinel-2.conf:/etc/sentinel.conf
-    command: ['redis-sentinel', '/etc/sentinel.conf']
-    # command: >
-    #   sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
-    #         echo "sentinel monitor ${REDIS_CLUSTER_NAME} ${HOST_IP} 6379 2" >> /etc/sentinel.conf &&
-    #         echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
-    #         echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
-    #         echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
-    #         echo "sentinel parallel-syncs ${REDIS_CLUSTER_NAME} 1" >> /etc/sentinel.conf &&
-    #         redis-sentinel /etc/sentinel.conf'
+    # volumes:
+    #   - ./sentinel-data-2:/data
+    #   - ./conf/sentinel-2.conf:/etc/sentinel.conf
+    # command: ['redis-sentinel', '/etc/sentinel.conf']
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
+            echo "sentinel monitor ${REDIS_CLUSTER_NAME} 172.21.0.3 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel parallel-syncs ${REDIS_CLUSTER_NAME} 1" >> /etc/sentinel.conf &&
+            redis-sentinel /etc/sentinel.conf'
     networks:
       redis-net:
         ipv4_address: 172.21.0.7
@@ -166,18 +166,18 @@ services:
       - redis-master
     ports:
       - '${SENTINEL_PORT_3}:26379'
-    volumes:
-      - ./sentinel-data-3:/data
-      - ./conf/sentinel-3.conf:/etc/sentinel.conf
-    command: ['redis-sentinel', '/etc/sentinel.conf']
-    # command: >
-    #   sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
-    #         echo "sentinel monitor ${REDIS_CLUSTER_NAME} ${HOST_IP} 6379 2" >> /etc/sentinel.conf &&
-    #         echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
-    #         echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
-    #         echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
-    #         echo "sentinel parallel-syncs ${REDIS_CLUSTER_NAME} 1" >> /etc/sentinel.conf &&
-    #         redis-sentinel /etc/sentinel.conf'
+    # volumes:
+    #   - ./sentinel-data-3:/data
+    #   - ./conf/sentinel-3.conf:/etc/sentinel.conf
+    # command: ['redis-sentinel', '/etc/sentinel.conf']
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
+            echo "sentinel monitor ${REDIS_CLUSTER_NAME} 172.21.0.3 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
+            echo "sentinel parallel-syncs ${REDIS_CLUSTER_NAME} 1" >> /etc/sentinel.conf &&
+            redis-sentinel /etc/sentinel.conf'
     networks:
       redis-net:
         ipv4_address: 172.21.0.8
