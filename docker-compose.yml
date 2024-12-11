@@ -7,21 +7,21 @@ services:
       - '6379:6739'
     volumes:
       - redis-master-data:/data
-      # - ./conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./conf/redis.conf:/usr/local/etc/redis/redis.conf
       # - ./aclfile.acl:/usr/local/etc/redis/aclfile.acl
     command: [
         'redis-server',
-        # '/usr/local/etc/redis/redis.conf',
-        '--appendonly',
-        'yes',
-        '--repl-diskless-load',
-        'on-empty-db',
-        '--replica-announce-ip',
-        '${HOST_IP}',
-        '--replica-announce-port',
-        '6379',
-        '--protected-mode',
-        'no',
+        '/usr/local/etc/redis/redis.conf',
+        # '--appendonly',
+        # 'yes',
+        # '--repl-diskless-load',
+        # 'on-empty-db',
+        # '--replica-announce-ip',
+        # '${HOST_IP}',
+        # '--replica-announce-port',
+        # '6379',
+        # '--protected-mode',
+        # 'no',
         # if not using acl file, comment out the following line
         # '--requirepass',
         # 'Complex-Password-Goes-Here',
@@ -41,23 +41,23 @@ services:
       - '6380:6379'
     volumes:
       - redis-slave1-data:/data
-      # - ./conf/redis-slave-1.conf:/usr/local/etc/redis/redis.conf
+      - ./conf/redis-slave-1.conf:/usr/local/etc/redis/redis.conf
       # - ./aclfile.acl:/usr/local/etc/redis/aclfile.acl
     command: [
         'redis-server',
-        # '/usr/local/etc/redis/redis.conf',
-        '--appendonly',
-        'yes',
-        '--replicaof',
-        'redis-master 6379',
-        '--repl-diskless-load',
-        'on-empty-db',
-        '--replica-announce-ip',
-        '${HOST_IP}',
-        '--replica-announce-port',
-        '6380',
-        '--protected-mode',
-        'no',
+        '/usr/local/etc/redis/redis.conf',
+        # '--appendonly',
+        # 'yes',
+        # '--replicaof',
+        # 'redis-master 6379',
+        # '--repl-diskless-load',
+        # 'on-empty-db',
+        # '--replica-announce-ip',
+        # '${HOST_IP}',
+        # '--replica-announce-port',
+        # '6380',
+        # '--protected-mode',
+        # 'no',
         # if not using acl file, comment out the following line
         # '--requirepass',
         # 'Complex-Password-Goes-Here',
@@ -79,23 +79,23 @@ services:
       - '6381:6379'
     volumes:
       - redis-slave2-data:/data
-      # - ./conf/redis-slave-2.conf:/usr/local/etc/redis/redis.conf
+      - ./conf/redis-slave-2.conf:/usr/local/etc/redis/redis.conf
       # - ./aclfile.acl:/usr/local/etc/redis/aclfile.acl
     command: [
         'redis-server',
-        # '/usr/local/etc/redis/redis.conf',
-        '--appendonly',
-        'yes',
-        '--replicaof',
-        'redis-master 6379',
-        '--repl-diskless-load',
-        'on-empty-db',
-        '--replica-announce-ip',
-        '${HOST_IP}',
-        '--replica-announce-port',
-        '6381',
-        '--protected-mode',
-        'no',
+        '/usr/local/etc/redis/redis.conf',
+        # '--appendonly',
+        # 'yes',
+        # '--replicaof',
+        # 'redis-master 6379',
+        # '--repl-diskless-load',
+        # 'on-empty-db',
+        # '--replica-announce-ip',
+        # '${HOST_IP}',
+        # '--replica-announce-port',
+        # '6381',
+        # '--protected-mode',
+        # 'no',
         # if not using acl file, comment out the following line
         # '--requirepass',
         # 'Complex-Password-Goes-Here',
