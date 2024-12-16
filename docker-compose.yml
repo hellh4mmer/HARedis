@@ -4,7 +4,7 @@ services:
     container_name: redis-master
     hostname: redis-master
     ports:
-      - '6379:6739'
+      - '6379:6379'
     volumes:
       - redis-master-data:/data
       # - ./conf/redis.conf:/usr/local/etc/redis/redis.conf
@@ -25,8 +25,12 @@ services:
         # if not using acl file, comment out the following line
         # '--requirepass',
         # 'Complex-Password-Goes-Here',
+        # if you prefer using acl file
         # '--aclfile',
         # '/usr/local/etc/redis/aclfile.acl',
+        # if you prefer user management using command
+        # '--user default on >password ~* &* +@all',
+        # '--user readwriteonly on >readwriteonlypassword ~* &* -@all +@read +@write',
       ]
     networks:
       redis-net:
@@ -64,8 +68,12 @@ services:
         # 'Complex-Password-Goes-Here',
         # '--masterauth',
         # '${REDIS_MASTER_PASSWORD}',
+        # if you prefer using acl file
         # '--aclfile',
         # '/usr/local/etc/redis/aclfile.acl',
+        # if you prefer user management using command
+        # '--user default on >password ~* &* +@all',
+        # '--user readwriteonly on >readwriteonlypassword ~* &* -@all +@read +@write',
       ]
     networks:
       redis-net:
@@ -103,8 +111,12 @@ services:
         # 'Complex-Password-Goes-Here',
         # '--masterauth',
         # '${REDIS_MASTER_PASSWORD}',
+        # if you prefer using acl file
         # '--aclfile',
         # '/usr/local/etc/redis/aclfile.acl',
+        # if you prefer user management using command
+        # '--user default on >password ~* &* +@all',
+        # '--user readwriteonly on >readwriteonlypassword ~* &* -@all +@read +@write',
       ]
     networks:
       redis-net:
@@ -118,8 +130,8 @@ services:
       - redis-master
     ports:
       - '${SENTINEL_PORT_1}:26379'
-    # volumes:
-    #   - ./sentinel-data-1:/data
+    volumes:
+      - ./sentinel-data-1:/data
     #   - ./conf/sentinel-1.conf:/etc/sentinel.conf
     # command: ['redis-sentinel', '/etc/sentinel.conf']
     command: >
@@ -142,8 +154,8 @@ services:
       - redis-master
     ports:
       - '${SENTINEL_PORT_2}:26379'
-    # volumes:
-    #   - ./sentinel-data-2:/data
+    volumes:
+      - ./sentinel-data-2:/data
     #   - ./conf/sentinel-2.conf:/etc/sentinel.conf
     # command: ['redis-sentinel', '/etc/sentinel.conf']
     command: >
@@ -166,8 +178,8 @@ services:
       - redis-master
     ports:
       - '${SENTINEL_PORT_3}:26379'
-    # volumes:
-    #   - ./sentinel-data-3:/data
+    volumes:
+      - ./sentinel-data-3:/data
     #   - ./conf/sentinel-3.conf:/etc/sentinel.conf
     # command: ['redis-sentinel', '/etc/sentinel.conf']
     command: >
