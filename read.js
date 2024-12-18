@@ -24,6 +24,16 @@ async function main() {
     console.log(info);
   });
 
+  ioclient.on('close', async () => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    console.log('Reading Done');
+  });
+
+  ioclient.on('end', async () => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    console.log('Disconnected from Redis master via Sentinel');
+  });
+
   try {
     const keys = await ioclient.keys('*');
     console.log('Keys:', keys);
@@ -32,7 +42,6 @@ async function main() {
   }
 
   ioclient.disconnect();
-  console.log('Disconnected from Redis master via Sentinel');
 }
 
 main();

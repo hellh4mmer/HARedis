@@ -23,23 +23,31 @@ async function main() {
   ioclient.on('connect', async () => {
     const info = await ioclient.info();
     console.log(info);
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
-  for (let i = 0; i < 50; i++) {
+  ioclient.on('close', async () => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    console.log('Writing Done');
+  });
+
+  ioclient.on('end', async () => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    console.log('Disconnected from Redis master via Sentinel');
+  });
+
+  for (let i = 0; i < 5; i++) {
     try {
       const name = faker.person.fullName();
-      console.log('inserting:', name);
       await ioclient.set(`nama${i}`, name);
+      console.log('inserted:', name);
     } catch (error) {
       console.log('Error:', error);
     }
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
   ioclient.disconnect();
-  console.log('Disconnected from Redis master via Sentinel');
 }
 
 main();
