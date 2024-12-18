@@ -4,7 +4,7 @@ services:
     container_name: redis-master
     hostname: redis-master
     ports:
-      - '6379:6379'
+      - '${REDIS_PORT_1}:6379'
     volumes:
       - redis-master-data:/data
       # - ./conf/redis.conf:/usr/local/etc/redis/redis.conf
@@ -14,14 +14,14 @@ services:
         # '/usr/local/etc/redis/redis.conf',
         '--appendonly',
         'yes',
-        # '--repl-diskless-load',
-        # 'on-empty-db',
-        # '--replica-announce-ip',
-        # '${HOST_IP}',
-        # '--replica-announce-port',
-        # '6379',
-        '--protected-mode',
-        'no',
+        '--repl-diskless-load',
+        'on-empty-db',
+        '--replica-announce-ip',
+        '${HOST_IP}',
+        '--replica-announce-port',
+        '${REDIS_PORT_1}',
+        # '--protected-mode',
+        # 'no',
         # if not using acl file, comment out the following line
         # '--requirepass',
         # 'Complex-Password-Goes-Here',
@@ -43,7 +43,7 @@ services:
     depends_on:
       - redis-master
     ports:
-      - '6380:6379'
+      - '${REDIS_PORT_2}:6379'
     volumes:
       - redis-slave1-data:/data
       # - ./conf/redis-slave-1.conf:/usr/local/etc/redis/redis.conf
@@ -57,12 +57,12 @@ services:
         '172.21.0.3 6379',
         '--repl-diskless-load',
         'on-empty-db',
-        # '--replica-announce-ip',
-        # '${HOST_IP}',
-        # '--replica-announce-port',
-        # '6380',
-        '--protected-mode',
-        'no',
+        '--replica-announce-ip',
+        '${HOST_IP}',
+        '--replica-announce-port',
+        '${REDIS_PORT_2}',
+        # '--protected-mode',
+        # 'no',
         # if not using acl file, comment out the following line
         # '--requirepass',
         # 'Complex-Password-Goes-Here',
@@ -86,7 +86,7 @@ services:
     depends_on:
       - redis-master
     ports:
-      - '6381:6379'
+      - '${REDIS_PORT_3}:6379'
     volumes:
       - redis-slave2-data:/data
       # - ./conf/redis-slave-2.conf:/usr/local/etc/redis/redis.conf
@@ -100,12 +100,12 @@ services:
         '172.21.0.3 6379',
         '--repl-diskless-load',
         'on-empty-db',
-        # '--replica-announce-ip',
-        # '${HOST_IP}',
-        # '--replica-announce-port',
-        # '6381',
-        '--protected-mode',
-        'no',
+        '--replica-announce-ip',
+        '${HOST_IP}',
+        '--replica-announce-port',
+        '${REDIS_PORT_3}',
+        # '--protected-mode',
+        # 'no',
         # if not using acl file, comment out the following line
         # '--requirepass',
         # 'Complex-Password-Goes-Here',
@@ -136,7 +136,9 @@ services:
     # command: ['redis-sentinel', '/etc/sentinel.conf']
     command: >
       sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
-            echo "sentinel monitor ${REDIS_CLUSTER_NAME} 172.21.0.3 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel monitor ${REDIS_CLUSTER_NAME} ${HOST_IP} 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel announce-ip ${HOST_IP}" >> /etc/sentinel.conf &&
+            echo "sentinel announce-port ${SENTINEL_PORT_2}" >> /etc/sentinel.conf &&
             echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
             echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
             echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
@@ -160,7 +162,9 @@ services:
     # command: ['redis-sentinel', '/etc/sentinel.conf']
     command: >
       sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
-            echo "sentinel monitor ${REDIS_CLUSTER_NAME} 172.21.0.3 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel monitor ${REDIS_CLUSTER_NAME} ${HOST_IP} 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel announce-ip ${HOST_IP}" >> /etc/sentinel.conf &&
+            echo "sentinel announce-port ${SENTINEL_PORT_2}" >> /etc/sentinel.conf &&
             echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
             echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
             echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
@@ -184,7 +188,9 @@ services:
     # command: ['redis-sentinel', '/etc/sentinel.conf']
     command: >
       sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
-            echo "sentinel monitor ${REDIS_CLUSTER_NAME} 172.21.0.3 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel monitor ${REDIS_CLUSTER_NAME} ${HOST_IP} 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel announce-ip ${HOST_IP}" >> /etc/sentinel.conf &&
+            echo "sentinel announce-port ${SENTINEL_PORT_3}" >> /etc/sentinel.conf &&
             echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
             echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
             echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&

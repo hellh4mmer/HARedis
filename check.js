@@ -1,34 +1,31 @@
-import { createClient } from 'redis';
+import { Redis } from 'ioredis';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 async function main() {
-  const client = createClient({
+  const ioclient = new Redis({
     sentinels: [
       { host: process.env.SENTINEL_HOST, port: process.env.SENTINEL_PORT_1 },
       { host: process.env.SENTINEL_HOST, port: process.env.SENTINEL_PORT_2 },
-      { host: process.env.SENTINEL_HOST, port: process.env.SENTINEL_PORT_3 },
+      // { host: process.env.SENTINEL_HOST, port: process.env.SENTINEL_PORT_3 },
     ],
-    name: process.env.REDIS_CLUSTER_NAME,
-    username: process.env.REDIS_READONLY_USER,
-    password: process.env.REDIS_READONLY_PASSWORD,
+    name: 'mymaster',
+    // password: 'Complex-Password-Goes-Here',
+    // sentinelPassword: 'sentinelPassword',
+    // sentinelRetryStrategy: function (times) {
+    //   // reconnect after
+    //   return Math.max(times * 100, 3000);
+    // },
   });
 
-  client.on('error', (err) => console.log('Redis Client Error:', err));
-  client.on('connect', () =>
-    console.log('Connected to Redis master via Sentinel')
-  );
-
-  await client.connect();
-
   try {
-    const randomKey = await client.randomKey();
+    const randomKey = await ioclient.randomkey();
     if (!randomKey) {
       console.log('No keys found');
     } else {
-      const randomValue = await client.get(randomKey);
-      const keysCount = await client.dbSize();
+      const randomValue = await ioclient.get(randomKey);
+      const keysCount = await ioclient.dbsize();
       console.log('Random key:', randomKey);
       console.log('Random value:', randomValue);
       console.log('Keys count:', keysCount);
@@ -37,7 +34,7 @@ async function main() {
     console.log('Error:', error);
   }
 
-  await client.disconnect();
+  ioclient.disconnect();
   console.log('Disconnected from Redis master via Sentinel');
 }
 
