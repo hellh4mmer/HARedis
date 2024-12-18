@@ -20,8 +20,8 @@ services:
         '${HOST_IP}',
         '--replica-announce-port',
         '${REDIS_PORT_1}',
-        # '--protected-mode',
-        # 'no',
+        '--protected-mode',
+        'no',
         # if not using acl file, comment out the following line
         # '--requirepass',
         # 'Complex-Password-Goes-Here',
@@ -34,7 +34,7 @@ services:
       ]
     networks:
       redis-net:
-        ipv4_address: 172.21.0.3
+        ipv4_address: 172.25.0.3
 
   redis-slave-1:
     image: redis:latest
@@ -61,8 +61,8 @@ services:
         '${HOST_IP}',
         '--replica-announce-port',
         '${REDIS_PORT_2}',
-        # '--protected-mode',
-        # 'no',
+        '--protected-mode',
+        'no',
         # if not using acl file, comment out the following line
         # '--requirepass',
         # 'Complex-Password-Goes-Here',
@@ -77,7 +77,7 @@ services:
       ]
     networks:
       redis-net:
-        ipv4_address: 172.21.0.4
+        ipv4_address: 172.25.0.4
 
   redis-slave-2:
     image: redis:latest
@@ -104,8 +104,8 @@ services:
         '${HOST_IP}',
         '--replica-announce-port',
         '${REDIS_PORT_3}',
-        # '--protected-mode',
-        # 'no',
+        '--protected-mode',
+        'no',
         # if not using acl file, comment out the following line
         # '--requirepass',
         # 'Complex-Password-Goes-Here',
@@ -120,7 +120,7 @@ services:
       ]
     networks:
       redis-net:
-        ipv4_address: 172.21.0.5
+        ipv4_address: 172.25.0.5
 
   sentinel-1:
     image: redis:latest
@@ -138,7 +138,7 @@ services:
       sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
             echo "sentinel monitor ${REDIS_CLUSTER_NAME} ${HOST_IP} 6379 2" >> /etc/sentinel.conf &&
             echo "sentinel announce-ip ${HOST_IP}" >> /etc/sentinel.conf &&
-            echo "sentinel announce-port ${SENTINEL_PORT_2}" >> /etc/sentinel.conf &&
+            echo "sentinel announce-port ${SENTINEL_PORT_1}" >> /etc/sentinel.conf &&
             echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
             echo "sentinel down-after-milliseconds ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
             echo "sentinel failover-timeout ${REDIS_CLUSTER_NAME} 10000" >> /etc/sentinel.conf &&
@@ -146,7 +146,7 @@ services:
             redis-sentinel /etc/sentinel.conf'
     networks:
       redis-net:
-        ipv4_address: 172.21.0.6
+        ipv4_address: 172.25.0.6
 
   sentinel-2:
     image: redis:latest
@@ -172,7 +172,7 @@ services:
             redis-sentinel /etc/sentinel.conf'
     networks:
       redis-net:
-        ipv4_address: 172.21.0.7
+        ipv4_address: 172.25.0.7
 
   sentinel-3:
     image: redis:latest
@@ -198,14 +198,14 @@ services:
             redis-sentinel /etc/sentinel.conf'
     networks:
       redis-net:
-        ipv4_address: 172.21.0.8
+        ipv4_address: 172.25.0.8
 
 networks:
   redis-net:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.21.0.0/16
+        - subnet: 172.25.0.0/16
 
 volumes:
   redis-master-data:

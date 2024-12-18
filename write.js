@@ -7,11 +7,11 @@ dotenv.config();
 async function main() {
   const ioclient = new Redis({
     sentinels: [
-      { host: process.env.SENTINEL_HOST, port: process.env.SENTINEL_PORT_1 },
-      { host: process.env.SENTINEL_HOST, port: process.env.SENTINEL_PORT_2 },
-      // { host: process.env.SENTINEL_HOST, port: process.env.SENTINEL_PORT_3 },
+      { host: process.env.HOST_IP, port: process.env.SENTINEL_PORT_1 },
+      { host: process.env.HOST_IP, port: process.env.SENTINEL_PORT_2 },
+      // { host: process.env.HOST_IP, port: process.env.SENTINEL_PORT_3 },
     ],
-    name: 'mymaster',
+    name: process.env.REDIS_CLUSTER_NAME,
     // password: 'Complex-Password-Goes-Here',
     // sentinelPassword: 'sentinelPassword',
     // sentinelRetryStrategy: function (times) {
